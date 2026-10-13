@@ -13,9 +13,9 @@
 #include "../../../../../kernel_platform/common/drivers/android/binder_internal.h"
 #include "../../../../../kernel_platform/common/drivers/android/binder_alloc.h"
 #else
-#include "../../../../../kernel-5.10/kernel/sched/sched.h"
-#include "../../../../../kernel-5.10/drivers/android/binder_internal.h"
-#include "../../../../../kernel-5.10/drivers/android/binder_alloc.h"
+#include "../../../../../kernel/sched/sched.h"
+#include "../../../../android/binder_internal.h"
+#include "../../../../android/binder_alloc.h"
 #endif
 
 #define MAX_RT_NUM         8

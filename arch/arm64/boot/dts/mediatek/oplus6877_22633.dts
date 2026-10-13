@@ -1187,7 +1187,8 @@
 };
 
 //#endif  /*OPLUS_VENDOR_SWTP*/
-#include <oplus6877_22633/cust.dtsi>
+/* [XINRAN] project cust.dtsi not shipped in this source tree: */
+/* #include <oplus6877_22633/cust.dtsi> */
 #include "mediatek/cust_mt6877_22633_charge.dtsi"
 /*#include "mediatek/cust_mt6877_touch_1080x2300.dtsi"*/
 #include "mediatek/cust_mt6877_camera_22633.dtsi"

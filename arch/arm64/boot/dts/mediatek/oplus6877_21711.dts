@@ -1172,7 +1172,8 @@ jiiov_fp_irq_active: jiiov_fp_irq_active {
 //#endif
 /* FINGERPRINT end */
 
-#include <oplus6877_21711/cust.dtsi>
+/* [XINRAN] project cust.dtsi not shipped in this source tree: */
+/* #include <oplus6877_21711/cust.dtsi> */
 #include "mediatek/cust_mt6877_oplus_21711_charge.dtsi"
 #include "mediatek/cust_mt6877_touch_1080x2300.dtsi"
 #include "mediatek/cust_mt6877_camera_moss.dtsi"

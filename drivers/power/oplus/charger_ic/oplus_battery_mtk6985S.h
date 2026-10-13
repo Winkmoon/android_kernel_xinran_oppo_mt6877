@@ -8,9 +8,9 @@
 
 #include <linux/alarmtimer.h>
 #include <linux/reboot.h>
-#include "../../../../../kernel-5.15/drivers/power/supply/charger_class.h"
-#include "../../../../../kernel-5.15/drivers/power/supply/adapter_class.h"
-#include "../../../../../kernel-5.15/drivers/power/supply/mtk_charger_algorithm_class.h"
+#include "../../supply/charger_class.h"
+#include "../../supply/adapter_class.h"
+#include "../../supply/mtk_charger_algorithm_class.h"
 #include <linux/power_supply.h>
 #include "../../../../../kernel-5.15/drivers/power/supply/mtk_smartcharging.h"
 

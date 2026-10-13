@@ -1149,7 +1149,8 @@ gpio_goodix_cs_func: gpio_goodix_cs_func {
        flavor_bin = "c";
 };
 
-#include <oplus6877_212A1/cust.dtsi>
+/* [XINRAN] project cust.dtsi not shipped in this source tree: */
+/* #include <oplus6877_212A1/cust.dtsi> */
 #include "mediatek/chopin/cust_mt6877_chopin_charge.dtsi"
 #include "mediatek/cust_mt6877_touch_1080x2300.dtsi"
 #include "mediatek/cust_mt6877_camera_212A1.dtsi"

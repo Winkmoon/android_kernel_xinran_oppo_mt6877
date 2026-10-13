@@ -416,7 +416,8 @@
 	};
 };
 
-#include "k6877v1_64_k419/cust.dtsi"
+/* [XINRAN] project cust.dtsi not shipped in this source tree: */
+/* #include "k6877v1_64_k419/cust.dtsi" */
 #include "mediatek/cust_mt6877_touch_1080x2300.dtsi"
 #include "mediatek/cust_mt6877_camera.dtsi"
 /*End of this file, DO NOT ADD ANYTHING HERE*/

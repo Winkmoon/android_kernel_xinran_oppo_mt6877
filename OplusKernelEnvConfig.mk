@@ -17,6 +17,14 @@
 
 -include oplus_native_features.mk
 
+# [XINRAN] Sub-makes do not inherit variables assigned inside this Makefile, so
+# OPPO's per-directory version checks (fingerprint/TEE gud headers, sensor SCP
+# include paths) would never see them. Export them here instead of requiring
+# TARGET_PRODUCT=/LINUX_KERNEL_VERSION= on every make invocation.
+LINUX_KERNEL_VERSION ?= kernel-$(VERSION).$(PATCHLEVEL)
+export TARGET_PRODUCT
+export LINUX_KERNEL_VERSION
+
 ###ifdef OPLUS_ARCH_INJECT
 OPLUS_CONNECTIVITY_NATIVE_FEATURE_SET :=
 

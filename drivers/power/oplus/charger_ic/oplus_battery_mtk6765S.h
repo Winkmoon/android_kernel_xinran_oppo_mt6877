@@ -18,11 +18,11 @@
 #include <uapi/linux/sched/types.h>
 #include <linux/uaccess.h>
 
-#include "../../../../../kernel-4.19/drivers/power/supply/charger_class.h"
-#include "../../../../../kernel-4.19/drivers/power/supply/adapter_class.h"
-#include "../../../../../kernel-4.19/drivers/power/supply/mtk_pd.h"
-#include "../../../../../kernel-4.19/drivers/power/supply/mtk_charger_algorithm_class.h"
-#include "../../../../../kernel-4.19/drivers/misc/mediatek/typec/tcpc/inc/tcpm.h"
+#include "../../supply/charger_class.h"
+#include "../../supply/adapter_class.h"
+#include "../../supply/mtk_pd.h"
+#include "../../supply/mtk_charger_algorithm_class.h"
+#include "../../../misc/mediatek/typec/tcpc/inc/tcpm.h"
 
 #define MAX_ALG_NO 10
 

@@ -1056,7 +1056,8 @@ gpio_goodix_cs_func: gpio_goodix_cs_func {
 };
 /*touch end*/
 
-#include "oplus6877_20355/cust.dtsi"
+/* [XINRAN] project cust.dtsi not shipped in this source tree: */
+/* #include "oplus6877_20355/cust.dtsi" */
 #include "mediatek/cust_mt6877_oplus_garen_charge.dtsi"
 #include "mediatek/cust_mt6877_camera.dtsi"
 /*End of this file, DO NOT ADD ANYTHING HERE*/

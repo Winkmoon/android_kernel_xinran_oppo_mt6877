@@ -9,6 +9,11 @@ outdir="$(pwd)"
 tarfile=$1
 cpio_dir=$outdir/$tarfile.tmp
 cpio=$KBUILD_SRC/tools/build/cpio
+# [XINRAN] The bundled tools/build/cpio is an x86-64 prebuilt and cannot run on
+# other host architectures (e.g. aarch64). Fall back to the host cpio.
+if ! "$cpio" --version >/dev/null 2>&1; then
+	cpio=cpio
+fi
 
 dir_list="
 include/
