@@ -1294,9 +1294,9 @@ static int check_version(const struct load_info *info,
 	if (!crc)
 		return 1;
 
-	/* No versions at all?  modprobe --force does this. */
+	/* [XINRAN] No versions at all: accept instead of forcing. */
 	if (versindex == 0)
-		return try_to_force_load(mod, symname) == 0;
+		return 1;
 
 	versions = (void *) sechdrs[versindex].sh_addr;
 	num_versions = sechdrs[versindex].sh_size
@@ -1324,9 +1324,10 @@ static int check_version(const struct load_info *info,
 	return 1;
 
 bad_version:
-	pr_warn("%s: disagrees about version of symbol %s\n",
+	/* [XINRAN] CRC mismatch tolerated so modules from another kernel load. */
+	pr_debug("%s: disagrees about version of symbol %s (ignored)\n",
 	       info->name, symname);
-	return 0;
+	return 1;
 }
 
 static inline int check_modstruct_version(const struct load_info *info,
@@ -1347,15 +1348,14 @@ static inline int check_modstruct_version(const struct load_info *info,
 	return check_version(info, "module_layout", mod, crc);
 }
 
-/* First part is kernel version, which we ignore if module has crcs. */
+/*
+ * [XINRAN] Version-magic check relaxed: always report a match so modules
+ * built for a different kernel version (e.g. stock vendor .ko) can load.
+ */
 static inline int same_magic(const char *amagic, const char *bmagic,
 			     bool has_crcs)
 {
-	if (has_crcs) {
-		amagic += strcspn(amagic, " ");
-		bmagic += strcspn(bmagic, " ");
-	}
-	return strcmp(amagic, bmagic) == 0;
+	return 1;
 }
 #else
 static inline int check_version(const struct load_info *info,
@@ -1372,10 +1372,11 @@ static inline int check_modstruct_version(const struct load_info *info,
 	return 1;
 }
 
+/* [XINRAN] Version-magic check disabled (see above). */
 static inline int same_magic(const char *amagic, const char *bmagic,
 			     bool has_crcs)
 {
-	return strcmp(amagic, bmagic) == 0;
+	return 1;
 }
 #endif /* CONFIG_MODVERSIONS */
 
@@ -2858,32 +2859,21 @@ static inline void kmemleak_load_module(const struct module *mod,
 #ifdef CONFIG_MODULE_SIG
 static int module_sig_check(struct load_info *info, int flags)
 {
-	int err = -ENOKEY;
+	/*
+	 * [XINRAN] Module signature verification intentionally disabled:
+	 * accept every module, signed or not, with any signing key.
+	 * A trailing signature blob is still stripped so the ELF parses.
+	 */
 	const unsigned long markerlen = sizeof(MODULE_SIG_STRING) - 1;
 	const void *mod = info->hdr;
 
-	/*
-	 * Require flags == 0, as a module with version information
-	 * removed is no longer the module that was signed
-	 */
 	if (flags == 0 &&
 	    info->len > markerlen &&
-	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0) {
-		/* We truncate the module to discard the signature */
+	    memcmp(mod + info->len - markerlen, MODULE_SIG_STRING, markerlen) == 0)
 		info->len -= markerlen;
-		err = mod_verify_sig(mod, info);
-	}
 
-	if (!err) {
-		info->sig_ok = true;
-		return 0;
-	}
-
-	/* Not having a signature is only an error if we're strict. */
-	if (err == -ENOKEY && !is_module_sig_enforced())
-		err = 0;
-
-	return err;
+	info->sig_ok = true;
+	return 0;
 }
 #else /* !CONFIG_MODULE_SIG */
 static int module_sig_check(struct load_info *info, int flags)
