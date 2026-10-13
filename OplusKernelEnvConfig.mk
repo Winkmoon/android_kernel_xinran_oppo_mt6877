@@ -25,6 +25,25 @@ LINUX_KERNEL_VERSION ?= kernel-$(VERSION).$(PATCHLEVEL)
 export TARGET_PRODUCT
 export LINUX_KERNEL_VERSION
 
+# [XINRAN] Required host tools self-check, run before anything is built.
+#
+# The helper binaries bundled in this tree (tools/build/cpio, ...) are x86-64
+# prebuilts taken from the Android tree, so they are not used at all here: the
+# build always relies on the system-provided tools.  Missing ones are a hard
+# error - not a warning - so the build stops immediately with an actionable
+# message instead of failing later somewhere deep in the tree.
+ifeq ($(XINRAN_SKIP_HOSTCHECK),)
+XINRAN_HOSTCHECK_OUT := $(shell $(CONFIG_SHELL) $(srctree)/scripts/host-selfcheck.sh)
+ifneq ($(filter HOST_TOOLCHECK_FAILED,$(XINRAN_HOSTCHECK_OUT)),)
+$(error Required host tool(s) missing - see the message printed above. Install them (e.g. apt-get install cpio) or set XINRAN_SKIP_HOSTCHECK=1 to bypass)
+endif
+endif
+
+# Always use the system cpio.  Exported so scripts such as kernel/gen_kheaders.sh
+# do not have to guess (nor silently fall back to something unusable).
+CPIO ?= $(shell command -v cpio 2>/dev/null)
+export CPIO
+
 ###ifdef OPLUS_ARCH_INJECT
 OPLUS_CONNECTIVITY_NATIVE_FEATURE_SET :=
 

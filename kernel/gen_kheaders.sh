@@ -8,11 +8,17 @@ sfile="$(readlink -f "$0")"
 outdir="$(pwd)"
 tarfile=$1
 cpio_dir=$outdir/$tarfile.tmp
-cpio=$KBUILD_SRC/tools/build/cpio
-# [XINRAN] The bundled tools/build/cpio is an x86-64 prebuilt and cannot run on
-# other host architectures (e.g. aarch64). Fall back to the host cpio.
-if ! "$cpio" --version >/dev/null 2>&1; then
-	cpio=cpio
+# [XINRAN] Always use the cpio resolved by the top-level Makefile (the system
+# one).  Never fall back to the bundled x86-64 prebuilt: if nothing usable is
+# available, fail loudly instead of silently degrading.
+cpio=${CPIO:-}
+if [ -z "$cpio" ] || [ ! -x "$cpio" ] || ! "$cpio" --version >/dev/null 2>&1; then
+	cpio=$(command -v cpio) || cpio=
+fi
+if [ -z "$cpio" ]; then
+	echo "ERROR: no usable cpio found (host architecture: $(uname -m))." >&2
+	echo "       Install cpio (e.g. 'apt-get install cpio') and rebuild." >&2
+	exit 1
 fi
 
 dir_list="
